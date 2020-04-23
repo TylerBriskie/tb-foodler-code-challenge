@@ -19,7 +19,16 @@ const RestaurantContextProvider = props => {
         )
         if (response.ok){
             const restaurantData = await response.json()
-            setRestaurants(restaurantData);
+            const sortedData = restaurantData.sort((a,b) => {
+                if (a.name < b.name){
+                    return -1
+                } else if (a.name > b.name){
+                    return 1
+                } else {
+                    return 0;
+                }
+            })
+            setRestaurants(sortedData);
         } else {
             // ERROR FETCHING DATA
             console.log(response);
