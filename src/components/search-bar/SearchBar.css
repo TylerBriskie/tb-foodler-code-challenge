@@ -1,10 +1,8 @@
 #search-filter-component{
     height: 150px;
-
 }
 
 .search-filters {
-    max-width: 50vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -13,6 +11,7 @@
 form {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     align-items: flex-end;
 }
 
@@ -20,4 +19,25 @@ form {
     margin-right: 16px;
     display: flex;
     flex-direction: column;
+}
+
+input, select {
+    margin-top: 16px;
+}
+
+button {
+    padding: 10px 20px;
+}
+
+button:focus{
+    outline: none;
+}
+
+button:nth-child(1){
+    margin: 0 32px;
+}
+
+button:last-child{
+    color: white;
+    background-color: #7377C3;
 }

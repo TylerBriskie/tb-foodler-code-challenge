@@ -79,11 +79,11 @@ const SearchBar = props => {
                         </select>
                     </div>
 
-                    <div>
-                    <button type="reset" onClick = {resetForm}>
+                    <div className="form-buttons">
+                     <button type="reset" onClick = {resetForm}>
                             Clear Values
                         </button>
-                        <button onClick={searchRestaurants}>
+                        <button className="" onClick={searchRestaurants}>
                             Search
                         </button>
                     </div>
