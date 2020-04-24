@@ -1,0 +1,16 @@
+#pagination-component-wrapper {
+    width: 63vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.page-list {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+
+}
+.page-list li {
+    margin-left: 1em;
+}

@@ -17,33 +17,37 @@ class RestaurantContextProvider extends Component {
         tags: [],
         selectedTag: 'All',
         currentPage: 1,
-        pageSize: 10,        
+        pageSize: 10, 
+        totalPages: 1,        
     }
 
     setCurrentPage = async(pageNumber) => {
+        console.log('setting page number: ', pageNumber);
         await this.setState({currentPage: pageNumber})
-        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.pageNumber);
+        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.currentPage);
     }
 
     setSelectedTag = async (tag) => {
         await this.setState({selectedTag: tag})
-        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.pageNumber);
+        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.currentPage);
     }
 
     setSelectedState = async (state) =>{
 
         await this.setState({selectedState: state})
-        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.pageNumber);
+        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.currentPage);
 
     }
 
     setFilter = async (searchTerm) => {
         await this.setState({searchTerm})
-        // this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm);
     }
 
 
     getRestaurants = async (selectedState, selectedTag, searchTerm, pageNumber) => {
+
+        console.log('fetching', selectedState, selectedTag, searchTerm, pageNumber)
+
         this.setState({loading: true});
 
         const response = await fetch(
@@ -113,9 +117,11 @@ class RestaurantContextProvider extends Component {
 
             const startIndex = pageNumber === 1 ? 0 : (pageNumber - 1) * this.state.pageSize;
             const endIndex = startIndex + this.state.pageSize;
+            const totalPages = Math.ceil(sortedRestaurants.length / this.state.pageSize);
+            
             let paginatedRestaurants = sortedRestaurants.splice(startIndex, endIndex)
 
-            this.setState({restaurants: paginatedRestaurants, tags: uniqueTags, loading: false});
+            this.setState({restaurants: paginatedRestaurants, tags: uniqueTags, loading: false, totalPages});
         } else {
             // ERROR FETCHING DATA
             console.log(response);

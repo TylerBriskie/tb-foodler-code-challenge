@@ -9,6 +9,7 @@ import SearchBar from './components/search-bar/SearchBar';
 import RestaurantList from './components/restaurant-list/RestaurantList';
 
 import './App.css';
+import Pagination from './components/pagination/Pagination';
 
 function App() {
 
@@ -17,8 +18,12 @@ function App() {
     <RestaurantContextProvider>
       <div className="App">
         <MainHeader />
+        
         <SearchBar />
+
+        <Pagination />
         <RestaurantList />
+
       </div>
     </RestaurantContextProvider>
 
