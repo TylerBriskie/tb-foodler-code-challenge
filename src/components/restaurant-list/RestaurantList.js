@@ -21,6 +21,9 @@ const RestaurantList = props => {
         fetchData();
         
     }, [])
+
+
+    // SHOW SPINNER IF LOADING ...
     if (loading){
         return (
             <div className="container" id="spinner-container">
@@ -28,10 +31,14 @@ const RestaurantList = props => {
             </div>
         )
     }
+    
+    // SHOW NO RESULTS COMPONENT IF NO RESULTS ...
     else if (!loading && restaurants.length === 0){
         return (
             <NoResults />
           );
+
+    // OTHERWISE, SHOW LIST OF RESTAURANTS
     } else {
         return (
 

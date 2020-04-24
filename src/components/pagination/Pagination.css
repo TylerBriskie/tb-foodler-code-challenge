@@ -13,4 +13,9 @@
 }
 .page-list li {
     margin-left: 1em;
+
+}
+
+.page-list li:hover {
+    cursor: pointer;
 }

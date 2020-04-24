@@ -10,6 +10,7 @@ class RestaurantContextProvider extends Component {
         loading: false,
         restaurants: [],
         searchTerm: '',
+        // HARD CODED STATES, IDEALLY THESE WOULD COME FROM THE SAME SOURCE OF TRUTH AS THE RESTAURANTS AND BE FOREIGN KEYS
         states: ['All','AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 
         'KS', 'KY', 'LA', 'ME', 'MD,', 'MA', 'MI', 'MN','MS','MO','MT', 'NE', 'NV', 'NH', 'NH', 'NM', 'NY', 'NC', 'ND', 'OH',
         'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'],
@@ -46,8 +47,6 @@ class RestaurantContextProvider extends Component {
 
     getRestaurants = async (selectedState, selectedTag, searchTerm, pageNumber) => {
 
-        console.log('fetching', selectedState, selectedTag, searchTerm, pageNumber)
-
         this.setState({loading: true});
 
         const response = await fetch(
@@ -58,6 +57,8 @@ class RestaurantContextProvider extends Component {
                 }
             }
         )
+        
+        // CHECK FOR ERROR ON RESPONSE
         if (response.ok){
             const restaurantData = await response.json()
             let sortedRestaurants = restaurantData.sort((a,b) => {
@@ -72,7 +73,7 @@ class RestaurantContextProvider extends Component {
 
 
 
-            // LOOP THROUGH RESTAURANTS TO SET TAGS, IDEALLY THESE WOULD BE FOREIGN KEYS TO RESTAURANTS, COMING FROM THE SAME DB AS THE RESTAURANT LIST...
+            // LOOP THROUGH RESTAURANTS TO SET TAGS, IDEALLY THESE WOULD BE FOREIGN KEYS TO RESTAURANTS, JUST LIKE THE STATES...
             let uniqueTags = ['All'];
             restaurantData.forEach(r => {
                 const {tags} = r;

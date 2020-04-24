@@ -13,18 +13,17 @@ const SearchBar = props => {
 
     
 
-    const selectState = async(event) => {
-        setSelectedState(event.target.value);
+    const selectState = e => {
+        setSelectedState(e.target.value);
 
     }
 
-    const selectTag = event => {
-        setSelectedTag(event.target.value)
+    const selectTag = e => {
+        setSelectedTag(e.target.value)
     }
 
-    const changeFilterHandler = event => {
-        // console.log(event.target.value);
-        setFilter(event.target.value);
+    const changeFilterHandler = e => {
+        setFilter(e.target.value);
     }
 
     const searchRestaurants = e => {
@@ -47,8 +46,7 @@ const SearchBar = props => {
                 <form>
                     <div className="filter-input-section">
                         <label>
-                            By Search Term
-                
+                            By Search Term                
                         </label>
                         <input onChange={changeFilterHandler}
                                 placeholder="search..."

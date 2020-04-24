@@ -6,10 +6,9 @@ import React, { useContext } from "react";
 import { RestaurantContext } from "../../context/RestaurantContext";
 import './Pagination.css'
 
-const Pagination = props => {
+const Pagination = () => {
  
-    const {currentPage, totalPages, setCurrentPage } = useContext(RestaurantContext)
-
+    const {currentPage, loading, totalPages, setCurrentPage } = useContext(RestaurantContext)
 
     let pageNumbers = [];
     for (let i = 1; i <= totalPages; i++){
@@ -20,22 +19,29 @@ const Pagination = props => {
         setCurrentPage(page);
     }
 
+    if (!loading && totalPages !== 0){
+        return (
+            <div id="pagination-component-wrapper" className="container" >
+               <span>
+                    page {currentPage} of {totalPages}
+                </span>
+                <ul className="page-list">
+                    {pageNumbers.map(number => 
+                        <li onClick={() => {handlePageChange(number)}}>
+                            {number}
+                        </li>
+                    )}
+                </ul>
+            </div>
+            );
+    } else {
+        return (
+            <div>
 
+            </div>
+        )
+    }
 
-    return (
-    <div id="pagination-component-wrapper" className="container" >
-       <span>
-            page {currentPage} of {totalPages}
-        </span>
-        <ul className="page-list">
-            {pageNumbers.map(number => 
-                <li onClick={() => {handlePageChange(number)}}>
-                    {number}
-                </li>
-            )}
-        </ul>
-    </div>
-    );
 };
 
 export default Pagination;
