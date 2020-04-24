@@ -1,5 +1,6 @@
 
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { RestaurantContext} from '../../context/RestaurantContext';
 
 
 // LOCAL IMPORTS
@@ -8,34 +9,88 @@ import './SearchBar.css'
 
 const SearchBar = props => {
 
+    const { states, tags, searchTerm, selectedState, selectedTag, setFilter, setSelectedState, setSelectedTag, getRestaurants } = useContext(RestaurantContext)
 
-    // HARD CODED ARRAY OF STATES TO SAVE TIME, IDEALLY THESE WOULD BE OBJECTS WITH A VALUE, DISPLAY NAME, ETC, COMING FROM A SINGLE SOURCE OF TRUTH.
-    const states = ['All States','AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 
-        'KS', 'KY', 'LA', 'ME', 'MD,', 'MA', 'MI', 'MN','MS','MO','MT', 'NE', 'NV', 'NH', 'NH', 'NM', 'NY', 'NC', 'ND', 'OH',
-        'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
-    ]
+    
 
+    const selectState = async(event) => {
+        setSelectedState(event.target.value);
+
+    }
+
+    const selectTag = event => {
+        setSelectedTag(event.target.value)
+    }
+
+    const changeFilterHandler = event => {
+        // console.log(event.target.value);
+        setFilter(event.target.value);
+    }
+
+    const searchRestaurants = e => {
+        e.preventDefault();
+        getRestaurants(selectedState, selectedTag, searchTerm);
+    }
+
+    const resetForm = () => {
+        getRestaurants('All', 'All', '');
+    }
 
     return (
-        <div id="search-filter-component" className="container">
-            <label>
-                <input
-                    placeholder="search..."
-                >
-                     
-                </input>
-                <button>
-                    Search
-                </button>
-            </label>
-            <select>
-                {states.map(state => 
-                    <option value={state}>
-                        {state}
-                    </option>    
-                )}
 
-            </select>
+        <div id="search-filter-component" className="container">
+            <h2>Filter Results</h2>
+            <div className="search-filters">
+                <form>
+                    <div className="filter-input-section">
+                        <label>
+                            By Search Term
+                
+                        </label>
+                        <input onChange={changeFilterHandler}
+                                placeholder="search..."
+                            >
+                                
+                        </input>
+                    </div>
+                   
+                    <div className="filter-input-section">
+                        <label>By State</label>
+                        <select onChange={selectState}>
+                                {states.map(state => 
+                                    <option value={state}>
+                                        {state}
+                                    </option>    
+                                )}
+
+                        </select>
+                    </div>
+
+                    <div className="filter-input-section">
+                        <label>By Tag</label>
+                        <select onChange={selectTag}>
+                            {tags.map(tag => 
+                                <option value={tag}>
+                                    {tag}
+                                </option>    
+                            )}
+
+                        </select>
+                    </div>
+
+                    <div>
+                    <button type="reset" onClick = {resetForm}>
+                            Clear Values
+                        </button>
+                        <button onClick={searchRestaurants}>
+                            Search
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+
+        
         </div>
     );
 };
