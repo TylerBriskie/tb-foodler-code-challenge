@@ -11,7 +11,7 @@ const NoResults = () => {
    
         return (
 
-            <div className="container">
+            <div className="container" id="no-results-component">
                 <h2>
                     No restaurants were found matching those filters
                 </h2>
