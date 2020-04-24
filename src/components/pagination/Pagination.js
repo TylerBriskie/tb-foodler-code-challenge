@@ -19,6 +19,7 @@ const Pagination = () => {
         setCurrentPage(page);
     }
 
+    // SHOW PAGINATION INFO IF PAGE COUNT IS NOT 0 AND PAGE IS NOT LOADING...
     if (!loading && totalPages !== 0){
         return (
             <div id="pagination-component-wrapper" className="container" >
@@ -34,6 +35,8 @@ const Pagination = () => {
                 </ul>
             </div>
             );
+
+    // ...OTHERWISE SHOW NOTHING
     } else {
         return (
             <div>

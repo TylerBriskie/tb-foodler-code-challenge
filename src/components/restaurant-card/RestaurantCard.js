@@ -8,9 +8,10 @@ import './RestaurantCard.css'
 
 const RestaurantCard = props => {
 
+  // REMOVE DUPLICATES FROM ARRAY OF TAGS
+  const genreArray = props.restaurant.tags.split(',');
+  const uniqueGenres = [...new Set(genreArray)]
 
-    const genreArray = props.restaurant.tags.split(',');
-    const uniqueGenres = [...new Set(genreArray)]
   return (
     <div className="card-wrapper">
         <h2>        
