@@ -29,14 +29,14 @@ const SearchBar = props => {
 
     const searchRestaurants = e => {
         e.preventDefault();
-        getRestaurants(selectedState, selectedTag, searchTerm);
+        getRestaurants(selectedState, selectedTag, searchTerm, 1);
     }
 
     const resetForm = () => {
         setFilter('');
         setSelectedTag('All');
         setSelectedState('All');    
-        getRestaurants('All', 'All', '');
+        getRestaurants('All', 'All', '', 1);
     }
 
     return (

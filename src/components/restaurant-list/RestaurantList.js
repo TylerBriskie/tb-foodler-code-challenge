@@ -16,7 +16,7 @@ const RestaurantList = props => {
 
     useEffect(() => {
         async function fetchData(){
-             await getRestaurants(selectedState, selectedTag, searchTerm);
+             await getRestaurants(selectedState, selectedTag, searchTerm, 1);
         }
         fetchData();
         

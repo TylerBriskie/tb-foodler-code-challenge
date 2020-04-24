@@ -16,17 +16,24 @@ class RestaurantContextProvider extends Component {
         selectedState: 'All',
         tags: [],
         selectedTag: 'All',
+        currentPage: 1,
+        pageSize: 10,        
+    }
+
+    setCurrentPage = async(pageNumber) => {
+        await this.setState({currentPage: pageNumber})
+        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.pageNumber);
     }
 
     setSelectedTag = async (tag) => {
         await this.setState({selectedTag: tag})
-        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm);
+        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.pageNumber);
     }
 
     setSelectedState = async (state) =>{
 
         await this.setState({selectedState: state})
-        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm);
+        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.pageNumber);
 
     }
 
@@ -36,7 +43,7 @@ class RestaurantContextProvider extends Component {
     }
 
 
-    getRestaurants = async (selectedState, selectedTag, searchTerm) => {
+    getRestaurants = async (selectedState, selectedTag, searchTerm, pageNumber) => {
         this.setState({loading: true});
 
         const response = await fetch(
@@ -58,6 +65,22 @@ class RestaurantContextProvider extends Component {
                     return 0;
                 }
             });
+
+
+
+            // LOOP THROUGH RESTAURANTS TO SET TAGS, IDEALLY THESE WOULD BE FOREIGN KEYS TO RESTAURANTS, COMING FROM THE SAME DB AS THE RESTAURANT LIST...
+            let uniqueTags = ['All'];
+            restaurantData.forEach(r => {
+                const {tags} = r;
+
+                const newTags = tags.split(',').filter(tag => 
+                    !uniqueTags.includes(tag)
+                );
+                newTags.forEach(newTag => {
+                    uniqueTags.push(newTag);
+                })
+
+            })
 
             // FILTER BASED ON STATE
             if (selectedState && selectedState.toUpperCase() !== 'ALL'){
@@ -85,23 +108,14 @@ class RestaurantContextProvider extends Component {
                 })
             }
         
+            // CLIENT SIDE PAGINATION, BETTER PRACTICE WOULD BE TO SEND PAGINATION AS PART OF REQUEST AND 
+            // HANDLE THE LOGIC SERVER SIDE
 
-            // LOOP THROUGH RESTAURANTS TO SET TAGS, IDEALLY THESE WOULD BE FOREIGN KEYS TO RESTAURANTS, COMING FROM THE SAME DB AS THE RESTAURANT LIST...
-            let uniqueTags = ['All'];
-            restaurantData.forEach(r => {
-                const {tags} = r;
+            const startIndex = pageNumber === 1 ? 0 : (pageNumber - 1) * this.state.pageSize;
+            const endIndex = startIndex + this.state.pageSize;
+            let paginatedRestaurants = sortedRestaurants.splice(startIndex, endIndex)
 
-                const newTags = tags.split(',').filter(tag => 
-                    !uniqueTags.includes(tag)
-                );
-                newTags.forEach(newTag => {
-                    uniqueTags.push(newTag);
-                })
-
-            })
-
-            // setTags(uniqueTags);
-            this.setState({restaurants: sortedRestaurants, tags: uniqueTags, loading: false});
+            this.setState({restaurants: paginatedRestaurants, tags: uniqueTags, loading: false});
         } else {
             // ERROR FETCHING DATA
             console.log(response);
@@ -117,6 +131,7 @@ class RestaurantContextProvider extends Component {
                 setFilter: this.setFilter,
                 setSelectedTag: this.setSelectedTag,
                 setSelectedState: this.setSelectedState,
+                setCurrentPage: this.setCurrentPage,
                 getRestaurants: this.getRestaurants}}>
             {this.props.children}
             </RestaurantContext.Provider>
