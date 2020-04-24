@@ -33,6 +33,9 @@ const SearchBar = props => {
     }
 
     const resetForm = () => {
+        setFilter('');
+        setSelectedTag('All');
+        setSelectedState('All');    
         getRestaurants('All', 'All', '');
     }
 
