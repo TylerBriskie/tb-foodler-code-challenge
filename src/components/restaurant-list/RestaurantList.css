@@ -1,6 +1,17 @@
 #restauraunt-list-component{
     margin-top: 1em;
+    width: 80vw;
     display: flex;
     flex-direction: row;
+    justify-content: center;
     flex-wrap: wrap;
+}
+
+.loading-spinner {
+    height: 30px;
+}
+
+#spinner-container {
+    display: flex;
+    align-items: center;
 }
