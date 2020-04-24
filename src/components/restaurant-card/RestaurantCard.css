@@ -1,7 +1,14 @@
 .card-wrapper {
     margin: 1em 2em 1em 0;
     width: 350px;
-    height: 200px;
+    min-height: 240px;
     padding: 0 10px;
     outline: solid black 1px;
 }
+.tag-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start
+}
+
