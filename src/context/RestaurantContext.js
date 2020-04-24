@@ -1,5 +1,5 @@
 
-import React, { Component, createContext, useState } from "react";
+import React, { Component, createContext } from "react";
 
 export const RestaurantContext = createContext();
 
@@ -12,7 +12,7 @@ class RestaurantContextProvider extends Component {
         searchTerm: '',
         // HARD CODED STATES, IDEALLY THESE WOULD COME FROM THE SAME SOURCE OF TRUTH AS THE RESTAURANTS AND BE FOREIGN KEYS
         states: ['All','AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 
-        'KS', 'KY', 'LA', 'ME', 'MD,', 'MA', 'MI', 'MN','MS','MO','MT', 'NE', 'NV', 'NH', 'NH', 'NM', 'NY', 'NC', 'ND', 'OH',
+        'KS', 'KY', 'LA', 'ME', 'MD,', 'MA', 'MI', 'MN','MS','MO','MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH',
         'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'],
         selectedState: 'All',
         tags: [],
@@ -23,25 +23,26 @@ class RestaurantContextProvider extends Component {
     }
 
     setCurrentPage = async(pageNumber) => {
-        console.log('setting page number: ', pageNumber);
-        await this.setState({currentPage: pageNumber})
+        await this.setState({currentPage: pageNumber});
         this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.currentPage);
     }
 
     setSelectedTag = async (tag) => {
-        await this.setState({selectedTag: tag})
+        await this.setState({selectedTag: tag});
         this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.currentPage);
     }
 
     setSelectedState = async (state) =>{
 
-        await this.setState({selectedState: state})
+        await this.setState({selectedState: state});
         this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.currentPage);
 
     }
 
     setFilter = async (searchTerm) => {
-        await this.setState({searchTerm})
+        await this.setState({searchTerm});
+        this.getRestaurants(this.state.selectedState, this.state.selectedTag, this.state.searchTerm, this.state.currentPage);
+
     }
 
 
@@ -77,8 +78,15 @@ class RestaurantContextProvider extends Component {
             let uniqueTags = ['All'];
             restaurantData.forEach(r => {
                 const {tags} = r;
+                const splitTags = tags.split(',');
 
-                const newTags = tags.split(',').filter(tag => 
+                // ...I AM NOT PROUD OF THIS. I ACTUALLY HATE IT, IM SURE THERES A MORE EFFICIENT WAY.
+                // BUT IT WORKS TO REMOVE THE DUPLICATE ENTRIES PRESENT ON SOME RESTAURANTS
+
+                const noDuplicates = new Set(splitTags);
+                const noDuplicatesArray = [...noDuplicates];
+
+                const newTags = noDuplicatesArray.filter(tag => 
                     !uniqueTags.includes(tag)
                 );
                 newTags.forEach(newTag => {

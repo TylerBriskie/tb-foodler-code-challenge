@@ -27,11 +27,11 @@ const RestaurantList = props => {
     if (loading){
         return (
             <div className="container" id="spinner-container">
-                <img className="loading-spinner" src={SpinnerLogo}/>
+                <img className="loading-spinner" src={SpinnerLogo} alt="loading spinner"/>
             </div>
         )
     }
-    
+
     // SHOW NO RESULTS COMPONENT IF NO RESULTS ...
     else if (!loading && restaurants.length === 0){
         return (

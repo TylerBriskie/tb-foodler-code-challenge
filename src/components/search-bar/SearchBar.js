@@ -1,5 +1,5 @@
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { RestaurantContext} from '../../context/RestaurantContext';
 
 
@@ -11,7 +11,7 @@ const SearchBar = props => {
 
     const { states, tags, searchTerm, selectedState, selectedTag, setFilter, setSelectedState, setSelectedTag, getRestaurants } = useContext(RestaurantContext)
 
-    
+    console.log('tags: ', tags);
 
     const selectState = e => {
         setSelectedState(e.target.value);
@@ -59,7 +59,7 @@ const SearchBar = props => {
                         <label>By State</label>
                         <select onChange={selectState}>
                                 {states.map(state => 
-                                    <option value={state}>
+                                    <option key={states.indexOf(state)} value={state}>
                                         {state}
                                     </option>    
                                 )}
@@ -70,8 +70,11 @@ const SearchBar = props => {
                     <div className="filter-input-section">
                         <label>By Tag</label>
                         <select onChange={selectTag}>
-                            {tags.map(tag => 
-                                <option value={tag}>
+                            {
+                            tags.map(tag => 
+                                <option
+                                    key={tag}
+                                    value={tag}>
                                     {tag}
                                 </option>    
                             )}

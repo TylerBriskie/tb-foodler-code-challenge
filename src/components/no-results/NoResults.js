@@ -1,5 +1,5 @@
 
-import React, {useContext, useEffect } from "react";
+import React from "react";
 import HungryMan from '../../HungryMan.png';
 
 // LOCAL IMPORTS
@@ -15,7 +15,7 @@ const NoResults = () => {
                 <h2>
                     No restaurants were found matching those filters
                 </h2>
-                <img src={HungryMan}>
+                <img src={HungryMan} alt="no resources found">
                 </img>
             </div>
         )

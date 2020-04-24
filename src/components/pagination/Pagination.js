@@ -28,7 +28,7 @@ const Pagination = () => {
                 </span>
                 <ul className="page-list">
                     {pageNumbers.map(number => 
-                        <li onClick={() => {handlePageChange(number)}}>
+                        <li key={number} onClick={() => {handlePageChange(number)}}>
                             {number}
                         </li>
                     )}

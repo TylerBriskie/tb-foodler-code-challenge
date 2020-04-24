@@ -24,7 +24,7 @@ const RestaurantCard = props => {
           </div>
           <div className="tag-container">
             {uniqueGenres.map(tag => 
-              <GenreTag tagName={tag}>ss</GenreTag>                
+              <GenreTag key={uniqueGenres.indexOf(tag)}tagName={tag}>ss</GenreTag>                
                 
             )}
           </div>
