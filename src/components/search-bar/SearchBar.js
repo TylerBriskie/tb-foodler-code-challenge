@@ -11,8 +11,6 @@ const SearchBar = props => {
 
     const { states, tags, searchTerm, selectedState, selectedTag, setFilter, setSelectedState, setSelectedTag, getRestaurants } = useContext(RestaurantContext)
 
-    console.log('tags: ', tags);
-
     const selectState = e => {
         setSelectedState(e.target.value);
 
