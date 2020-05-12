@@ -47,7 +47,6 @@ class RestaurantContextProvider extends Component {
 
 
     getRestaurants = async (selectedState, selectedTag, searchTerm, pageNumber) => {
-
         this.setState({loading: true});
 
         const response = await fetch(
@@ -71,8 +70,6 @@ class RestaurantContextProvider extends Component {
                     return 0;
                 }
             });
-
-
 
             // LOOP THROUGH RESTAURANTS TO SET TAGS, IDEALLY THESE WOULD BE FOREIGN KEYS TO RESTAURANTS, JUST LIKE THE STATES...
             let uniqueTags = ['All'];
@@ -127,8 +124,14 @@ class RestaurantContextProvider extends Component {
             const startIndex = pageNumber === 1 ? 0 : (pageNumber - 1) * this.state.pageSize;
             const endIndex = startIndex + this.state.pageSize;
             const totalPages = Math.ceil(sortedRestaurants.length / this.state.pageSize);
-            
-            let paginatedRestaurants = sortedRestaurants.splice(startIndex, endIndex)
+
+            let paginatedRestaurants = [];
+
+            for (let i = startIndex; i < endIndex; i++){
+                if (sortedRestaurants[i]){
+                    paginatedRestaurants.push(sortedRestaurants[i])
+                }
+            }
 
             this.setState({restaurants: paginatedRestaurants, tags: uniqueTags, loading: false, totalPages});
         } else {
