@@ -49,7 +49,9 @@ class RestaurantContextProvider extends Component {
     getRestaurants = async (selectedState, selectedTag, searchTerm, pageNumber) => {
         console.log('fetching restaurants...');
         this.setState({loading: true});
-
+        if (pageNumber === 0 ){
+            pageNumber = 1;
+        }
         const response = await fetch(
             process.env.REACT_APP_API_BASE_URL+'restaurants', 
             {
