@@ -47,6 +47,7 @@ class RestaurantContextProvider extends Component {
 
 
     getRestaurants = async (selectedState, selectedTag, searchTerm, pageNumber) => {
+        console.log('fetching restaurants...');
         this.setState({loading: true});
 
         const response = await fetch(
@@ -121,9 +122,27 @@ class RestaurantContextProvider extends Component {
             // CLIENT SIDE PAGINATION, BETTER PRACTICE WOULD BE TO SEND PAGINATION AS PART OF REQUEST AND 
             // HANDLE THE LOGIC SERVER SIDE
 
-            const startIndex = pageNumber === 1 ? 0 : (pageNumber - 1) * this.state.pageSize;
-            const endIndex = startIndex + this.state.pageSize;
-            const totalPages = Math.ceil(sortedRestaurants.length / this.state.pageSize);
+            console.log('restaurants after filter: ', sortedRestaurants);
+       
+            let startIndex = pageNumber === 1 ? 0 : (pageNumber - 1) * this.state.pageSize;
+            let endIndex = startIndex + this.state.pageSize;
+            let totalPages = Math.ceil(sortedRestaurants.length / this.state.pageSize);
+
+
+            // IF THERES FEWER PAGES THAN THE REQUESTED PAGE NUMBER, SHOW LAST PAGE OF AVAILABLE DATA
+            if (pageNumber > totalPages){
+
+                pageNumber = totalPages;
+                if (totalPages === 1){
+                    // ONLY ONE PAGE - END INDEX IS LAST ITEM IN ARRAY
+                    startIndex = 0;
+                    endIndex = sortedRestaurants.length;
+
+                } else {
+                    startIndex = (pageNumber - 1) * this.state.pageSize;
+                    endIndex = startIndex + this.state.pageSize;
+                }
+            } 
 
             let paginatedRestaurants = [];
 
@@ -133,7 +152,7 @@ class RestaurantContextProvider extends Component {
                 }
             }
 
-            this.setState({restaurants: paginatedRestaurants, tags: uniqueTags, loading: false, totalPages});
+            this.setState({restaurants: paginatedRestaurants, tags: uniqueTags, currentPage: pageNumber, loading: false, totalPages});
         } else {
             // ERROR FETCHING DATA
             console.log(response);
